@@ -1,4 +1,0 @@
-Speed: 0.6ms pre-process, 17.3ms inference, 0.4ms NMS, 3.9ms deep sort update         per image at shape (1, 3, 1280, 1280)
-model: test_akurasi_11_9
-video: /home/grading/New folder/Test/11_9.mp4
-count: 15
