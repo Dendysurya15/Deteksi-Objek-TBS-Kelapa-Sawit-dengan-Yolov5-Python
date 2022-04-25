@@ -1,1 +1,13 @@
 .vscode/
+runs/
+test_akurasi_30_mar_22/
+test_akurasi_29_mar_22/
+inference/
+vid 1/
+test/
+test1/
+yolo5n6/
+test_akurasi_11_9/
+test_akurasi/
+output/
+log/

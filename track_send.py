@@ -27,7 +27,7 @@ import time
 import datetime
 from datetime import datetime, timedelta
 import requests
-
+import pytz
 
 from yolov5.models.experimental import attempt_load
 from yolov5.utils.downloads import attempt_download
@@ -56,6 +56,8 @@ timer = 25
 url = 'https://srs-ssms.com/post-py.php'
 headers = {"content-type": "application/x-www-form-urlencoded",
           'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36'}
+#set the timezone
+tzInfo = pytz.timezone('Asia/Bangkok')
 
 def detect(opt):
     out, source, yolo_model, deep_sort_model, show_vid, save_vid, save_txt, imgsz, evaluate, half, project, name, exist_ok= \
@@ -66,7 +68,7 @@ def detect(opt):
 
     device = select_device(opt.device)
     
-    lastDate = datetime.now()+timedelta(seconds=timer, minutes=0, hours=0)
+    lastDate = datetime.now(tz=tzInfo)+timedelta(seconds=timer, minutes=0, hours=0)
 
     # initialize deepsort
     cfg = get_config()
@@ -242,16 +244,19 @@ def detect(opt):
                 if cv2.waitKey(1) == ord('q'):  # q to quit
                     raise StopIteration
                 
-                if datetime.now() > lastDate:
+                if datetime.now(tz=tzInfo) > lastDate:
                     try:
-                        asyncio.get_event_loop().run_until_complete(post_count())
+                        # asyncio.get_event_loop().run_until_complete(post_count())
+                        save_log(str(count_now) + ";" +  str(datetime.now(tz=tzInfo).strftime("%Y-%m-%d %H:%M:%S")), str(Path(log_dir)))
+                        count_now = 0
+                        LOGGER.error("Data sudah disimpan")
                     except:
                         LOGGER.error("internet e mati bos")
-                        params = {'count': str(count_now), 'timestamp': datetime.now().strftime("%Y-%m-%d %X")}
-                        save_log(params, str(Path(log_dir)))
-                        count_now = 0
+                        # params = {'count': str(count_now), 'timestamp': datetime.now(tz=tzInfo).strftime("%Y-%m-%d %H:%I:%S")}
+                        # save_log(params, str(Path(log_dir)))
+                        # count_now = 0
                     #asyncio.run(post_count())
-                    lastDate = datetime.now() + timedelta(seconds=timer, minutes=0, hours=0)
+                    lastDate = datetime.now(tz=tzInfo) + timedelta(seconds=timer, minutes=0, hours=0)
 
 
             # Save results (image with detections)
@@ -323,17 +328,17 @@ def count_obj(box ,w , h, id):
             count += 1
             data.append(id)
             
-async def post_count():
-    global count_now
-    async with aiohttp.ClientSession() as session:
-        params = {'count': str(count_now), 'timestamp': datetime.now().strftime("%Y-%m-%d %X")}
-        async with session.post(url,data=params) as resp:
-            count_now = 0
-            response = await resp.read()
-            LOGGER.info('Response status ' + str(response))
+# async def post_count():
+#     global count_now
+#     async with aiohttp.ClientSession() as session:
+#         params = {'count': str(count_now), 'timestamp': datetime.now(tz=tzInfo).strftime("%Y-%m-%d %X")}
+#         async with session.post(url,data=params) as resp:
+#             count_now = 0
+#             response = await resp.read()
+#             LOGGER.info('Response status ' + str(response))
     
 def save_log(header, path):
-    header_str = str(header + '\n')
+    header_str = str(header)  + '\n'
     file_path = path + '/log.TXT'
     if not os.path.exists(path):
         os.makedirs(path)
@@ -387,6 +392,8 @@ if __name__ == '__main__':
     yolo_model_str = opt.yolo_model
     iou = opt.iou_thres
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
+    
+    #os.system('python send_query.py')
 
     with torch.no_grad():
         detect(opt)

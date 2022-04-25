@@ -3,6 +3,10 @@ python track_fps.py --yolo_model "/home/grading/grading/yolov5/runs/train/exp3/w
 python track_fps.py --yolo_model "/home/grading/grading/yolov5/runs/train/yolov5n/yolov5/runs/train/exp4/weights/best.pt" --show-vid --source "/home/grading/New folder/Test/192.168.1.64_01_20220315092201189.mp4" --conf-thres 0.5 --save-vid
 
 
-python train.py --img 1280 --batch 3 --epochs 60 --data sip.yaml --weights yolov5s6.pt
+    python train.py --img 1280 --batch 20 --epochs 120 --data sip.yaml --weights yolov5s6.pt
 
 python track_send.py --yolo_model "/home/grading/grading/yolov5/runs/train/yolov5n/yolov5/runs/train/exp4/weights/best.pt" --show-vid --source "/home/grading/New folder/Test/192.168.1.64_01_20220315092201189.mp4" --conf-thres 0.5 --save-vid
+
+python track_send.py --yolo_model "/home/grading/weights/yolo5n6_1271/best.pt" --show-vid --source "/home/grading/video_test/1_717.mp4" --conf_thres 0.4
+
+python track_all_classes.py --yolo_model "/home/grading/weights/yolov5n6_539/weights/best.pt" --show-vid --source "/home/grading/sampel_video/#testing/vlc-record-2022-04-19-14h30m41s-10.9.143.25_01_20220414123556141.mp4-.mp4" --conf_thres 0.3
