@@ -31,3 +31,12 @@ Contoh penggunaan script :
 _python split_test_train.py --datadir "/home/grading/grading/yolov5/train_data/sampel_12_apr_523_tanpa_ripe/all/" --output "/home/grading/grading/yolov5/train_data/sampel_12_apr_523_tanpa_ripe/all/" --image_ext "jpg"_ 
 
 ## txt_to_xml.py
+
+Script ini berfungsi untuk mengkonversi file txt ke xml Yolov5. Adapun cara penggunaan script ini adalah sebagai berikut _python txt_to_xml.py_
+
+## xml_to_txt.py
+
+Script ini berfungsi untuk mengkonversi file xml Yolov5 ke txt. Adapun cara penggunaan script ini adalah sebagia berikut _python xml_to_txt.py --input "nama_direktori_foto_jpg_xml" --output "nama_direktori_output"_
+
+Contoh penggunaan script :
+_python xml_to_txt.py --input "/home/grading/new sampel sampling skm all/5 april filter3/all/" --output "/home/grading/new sampel sampling skm all/5 april filter3/"_
