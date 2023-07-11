@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 import aiohttp
 import asyncio
 import datetime
@@ -13,7 +14,7 @@ headers = {"content-type": "application/x-www-form-urlencoded",
 timer = 20
 log_dir = Path(os.getcwd() + '/log/log.TXT')
 
-def read_text_file(file_path):
+def read_text_file(file_path,timestamp):
     if os.path.exists(file_path):
         with open(file_path, 'r') as z:
             content = z.readlines()
@@ -28,6 +29,8 @@ def read_text_file(file_path):
                 wr.close()
                 print("Status : " + str(code) + " " + payload +".")
             except Exception as e:
+                code = asyncio.get_event_loop().run_until_complete(post_count('0;0;0;0;0;'+timestamp))
+                print(str(code))
                 print("Errornya "+ str(e))
                 #file kosong
                 
@@ -47,5 +50,5 @@ lastDate = datetime.now(tz=tzInfo)+timedelta(seconds=timer, minutes=0, hours=0)
 while True:
     
     if datetime.now(tz=tzInfo) > lastDate:
-        read_text_file(log_dir)
+        read_text_file(log_dir,datetime.now(tz=tzInfo).strftime("%Y-%m-%d %H:%M:%S"))
         lastDate = datetime.now(tz=tzInfo) + timedelta(seconds=timer, minutes=0, hours=0)

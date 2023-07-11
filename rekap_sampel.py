@@ -20,6 +20,8 @@ def read_text_file(file_path, output):
 		overripe = 0
 		empty_bunch = 0
 		abnormal = 0
+		long_stalk = 0
+		dirt = 0
 
 		for x in content:
 			class_num = x.split()[0]
@@ -34,11 +36,15 @@ def read_text_file(file_path, output):
 					empty_bunch+=1
 				case '4':
 					abnormal+=1
+				case '5':
+					long_stalk+=1
+				case '6':
+					dirt+=1
 		
 		file_name = file_path.rsplit("/",1)[-1]
 		file_name = file_name.rsplit(".",1)[0]
-		write_text_file(out_path, file_name + "," + str(unripe) + "," + str(ripe) + "," + str(overripe) + "," + str(empty_bunch) + "," + str(abnormal))
-		print(out_path, file_name + "," + str(unripe) + "," + str(ripe) + "," + str(overripe) + "," + str(empty_bunch) + "," + str(abnormal))
+		write_text_file(out_path, file_name + "," + str(unripe) + "," + str(ripe) + "," + str(overripe) + "," + str(empty_bunch) + "," + str(abnormal) + ","+ str(long_stalk) + ","+ str(dirt))
+		print(out_path, file_name + "," + str(unripe) + "," + str(ripe) + "," + str(overripe) + "," + str(empty_bunch) + "," + str(abnormal) + "," +str(long_stalk)+","+ str(dirt))
 		z.close()
 
 def write_text_file(output, text):
@@ -52,9 +58,9 @@ print("1")
 parser.add_argument('--output', type=str, default=str(os.getcwd()) + '/output', help='output folder path')
 print("2")
 folder = parser.parse_args().input
-print("3")
+print(folder)
 output = parser.parse_args().output
-print("4")
+print(output)
 
 # Change the directory
 os.chdir(folder)
